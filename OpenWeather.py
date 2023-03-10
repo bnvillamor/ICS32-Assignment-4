@@ -75,14 +75,5 @@ class OpenWeather:
         :returns: The transcluded message
         '''
         # TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
-        lst1 = message.split()
-        temp = ''
-        temp2 = ''
-        for i in lst1:
-            if '@weather' in i:
-                temp = i
-                i = i.replace('@weather', str(self.high_temperature))
-                temp2 = i
-        if temp != '':
-            message = message.replace(temp, temp2)
+        message = message.replace('@weather', str(self.high_temperature))
         return message
