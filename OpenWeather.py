@@ -52,4 +52,14 @@ class OpenWeather:
         url = f"http://api.openweathermap.org/data/2.5/weather?zip={self.zipcode},{self.ccode}&appid={self.apikey}"
         weather_obj = self._download_url(url)
         self.temperature = weather_obj['main']['temp']
-        
+        self.high_temperature = weather_obj['main']['temp_max']
+        self.low_temperature = weather_obj['main']['temp_min']
+        self.latitude = weather_obj['coord']['lat']
+        self.longitude = weather_obj['coord']['lon']
+        self.description = weather_obj['weather'][0]['description']
+        self.humidity = weather_obj['main']['humidity']
+        self.city = weather_obj['name']
+        self.sunset = weather_obj['sys']['sunset']
+        self.sunrise = weather_obj['sys']['sunset']
+        self.pressure = weather_obj['main']['pressure']
+

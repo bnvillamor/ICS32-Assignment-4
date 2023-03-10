@@ -32,7 +32,7 @@ def main() -> None:
 
     weather_obj = _download_url(url)
     if weather_obj is not None:
-        print(weather_obj['main']['temp'])
+        print(weather_obj['main']['temp_max'])
         #['weather'][0]['description']
 
 
