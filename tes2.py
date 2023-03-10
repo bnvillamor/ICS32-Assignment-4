@@ -3,7 +3,7 @@ from OpenWeather import OpenWeather
 zipcode = "92697"
 ccode = "US"
 apikey = "9f6cba8a231f19a48f417e2811537884"
-
+# "9f6cba8a231f19a48f417e2811537884"
 open_weather = OpenWeather(zipcode, ccode)
 open_weather.set_apikey(apikey)
 open_weather.load_data()

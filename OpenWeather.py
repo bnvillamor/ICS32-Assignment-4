@@ -29,11 +29,15 @@ class OpenWeather:
             response = urllib.request.urlopen(url_to_download)
             json_results = response.read()
             r_obj = json.loads(json_results)
-
         except urllib.error.HTTPError as err:
             print('Failed to download contents of URL')
             print(f'Status code: {err.code}')
-
+        except urllib.error.URLError as err2:
+            print('Loss of local connection to Internet')
+            print(f'Error code: {err2}')
+        except IndexError, KeyError as err3:
+            print('Invalid data formatting from the remote API')
+            print(f'Error code: {err3}')
         finally:
             if response is not None:
                 response.close()
@@ -51,15 +55,14 @@ class OpenWeather:
         #TODO: assign the necessary response data to the required class data attributes
         url = f"http://api.openweathermap.org/data/2.5/weather?zip={self.zipcode},{self.ccode}&appid={self.apikey}"
         weather_obj = self._download_url(url)
-        self.temperature = weather_obj['main']['temp']
-        self.high_temperature = weather_obj['main']['temp_max']
-        self.low_temperature = weather_obj['main']['temp_min']
-        self.latitude = weather_obj['coord']['lat']
-        self.longitude = weather_obj['coord']['lon']
-        self.description = weather_obj['weather'][0]['description']
-        self.humidity = weather_obj['main']['humidity']
-        self.city = weather_obj['name']
-        self.sunset = weather_obj['sys']['sunset']
-        self.sunrise = weather_obj['sys']['sunset']
-        self.pressure = weather_obj['main']['pressure']
+        if weather_obj is not None:
+            self.temperature = weather_obj['main']['temp']
+            self.high_temperature = weather_obj['main']['temp_max']
+            self.low_temperature = weather_obj['main']['temp_min']
+            self.latitude = weather_obj['coord']['lat']
+            self.longitude = weather_obj['coord']['lon']
+            self.description = weather_obj['weather'][0]['description']
+            self.humidity = weather_obj['main']['humidity']
+            self.city = weather_obj['name']
+            self.sunset = weather_obj['sys']['sunset']
 
