@@ -25,14 +25,15 @@ def _download_url(url_to_download: str) -> dict:
 
 
 def main() -> None:
-    zip = "92697"
+    zipc = "92697"
     ccode = "US"
     apikey = "9f6cba8a231f19a48f417e2811537884"
-    url = f"http://api.openweathermap.org/data/2.5/weather?zip={zip},{ccode}&appid={apikey}"
+    url = f"http://api.openweathermap.org/data/2.5/weather?zip={zipc},{ccode}&appid={apikey}"
 
     weather_obj = _download_url(url)
     if weather_obj is not None:
-        print(weather_obj['weather'][0]['description'])
+        print(weather_obj['main']['temp'])
+        #['weather'][0]['description']
 
 
 if __name__ == '__main__':
