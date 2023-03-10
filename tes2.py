@@ -18,6 +18,6 @@ print(f"The current humidity for {zipcode} is {open_weather.humidity}")
 print(f"The sun will set in {open_weather.city} at {open_weather.sunset}")
 '''
 print(f"The temperature is {open_weather.high_temperature} degrees")
-message = 'The high temperature is @weather degrees'
+message = 'The high temperature is @weather degrees and @lastfm is best album ever'
 m2 = open_weather.transclude(message)
 print(m2)

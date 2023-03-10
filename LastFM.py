@@ -68,10 +68,13 @@ class LastFM:
         '''
         #TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
         lst1 = message.split()
-        temp = 'default'
+        temp = ''
+        temp2 = ''
         for i in lst1:
-            if i == '@lastfm':
+            if '@lastfm' in i:
                 temp = i
-        if temp != 'default':
-            message = message.replace(temp, str(self.top_album))
+                i = i.replace('@lastfm', str(self.top_album))
+                temp2 = i
+        if temp != '':
+            message = message.replace(temp, temp2)
         return message

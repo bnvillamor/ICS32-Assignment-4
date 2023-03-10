@@ -6,19 +6,20 @@ import json
 from urllib import request, error
 # 9f6cba8a231f19a48f417e2811537884
 
+
 class OpenWeather:
 
     def __init__(self, zipcode='92697', ccode='US'):
         self.zipcode = zipcode
         self.ccode = ccode
 
-    def set_apikey(self, apikey:str) -> None:
+    def set_apikey(self, apikey: str) -> None:
         '''
         Sets the apikey required to make requests to a web API.
         :param apikey: The apikey supplied by the API service
 
         '''
-        #TODO: assign apikey value to a class data attribute that can be accessed by class members
+        # TODO: assign apikey value to a class data attribute that can be accessed by class members
         self.apikey = apikey
 
     def _download_url(self, url_to_download: str) -> dict:
@@ -50,9 +51,9 @@ class OpenWeather:
         class data attributes.
 
         '''
-        #TODO: use the apikey data attribute and the urllib module to request data from the web api. 
+        # TODO: use the apikey data attribute and the urllib module to request data from the web api.
         # See sample code at the begining of Part 1 for a hint.
-        #TODO: assign the necessary response data to the required class data attributes
+        # TODO: assign the necessary response data to the required class data attributes
         url = f"http://api.openweathermap.org/data/2.5/weather?zip={self.zipcode},{self.ccode}&appid={self.apikey}"
         weather_obj = self._download_url(url)
         if weather_obj is not None:
@@ -70,15 +71,18 @@ class OpenWeather:
         '''
         Replaces keywords in a message with associated API data.
         :param message: The message to transclude
-            
+
         :returns: The transcluded message
         '''
-        #TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
+        # TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
         lst1 = message.split()
-        temp = 'default'
+        temp = ''
+        temp2 = ''
         for i in lst1:
-            if i == '@weather':
+            if '@weather' in i:
                 temp = i
-        if temp != 'default':
-            message = message.replace(temp, str(self.high_temperature))
+                i = i.replace('@weather', str(self.high_temperature))
+                temp2 = i
+        if temp != '':
+            message = message.replace(temp, temp2)
         return message
