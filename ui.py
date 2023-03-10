@@ -24,9 +24,13 @@ def main():
     print('R: Read the contents of a file')
     print('O: Open an existing dsu file')
     print('L: List the contents of a specified directory')
-    print('E: Edit a DSU file loaded by the C or O commands')
+    print('E: Edit a DSU file loaded by the C or O commands. ', end='')
+    print('When writing a post, there are currently 2 available keywords:')
+    print('\t@weather: Bound to temperature high')
+    print('\t@lastfm: Bound to artist top album')
     print('P: Print data stored in a DSU file loaded by the C or O commands')
     print('Q: Quit the program')
+    
     print('Please input a valid command. Remember that it is case sensitive!')
     command = input()
     if command in ('C', 'D', 'R', 'O', 'L', 'Q', 'E', 'P'):
@@ -41,4 +45,4 @@ def main():
         full_input = f'{command} {path}'
     else:
         full_input = f'{command} {path} {option}'
-    a3.ui_operations(full_input)
+    a4.ui_operations(full_input)

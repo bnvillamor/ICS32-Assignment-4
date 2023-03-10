@@ -4,11 +4,11 @@
 import urllib
 import json
 from urllib import request, error
-
+# 9f6cba8a231f19a48f417e2811537884
 
 class OpenWeather:
 
-    def __init__(self, zipcode, ccode):
+    def __init__(self, zipcode='92697', ccode='US'):
         self.zipcode = zipcode
         self.ccode = ccode
 
@@ -35,7 +35,7 @@ class OpenWeather:
         except urllib.error.URLError as err2:
             print('Loss of local connection to Internet')
             print(f'Error code: {err2}')
-        except IndexError, KeyError as err3:
+        except (IndexError, KeyError) as err3:
             print('Invalid data formatting from the remote API')
             print(f'Error code: {err3}')
         finally:
@@ -66,3 +66,12 @@ class OpenWeather:
             self.city = weather_obj['name']
             self.sunset = weather_obj['sys']['sunset']
 
+    def transclude(self, message:str) -> str:
+        '''
+        Replaces keywords in a message with associated API data.
+        :param message: The message to transclude
+            
+        :returns: The transcluded message
+        '''
+        #TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
+        pass
