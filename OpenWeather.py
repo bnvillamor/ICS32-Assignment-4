@@ -66,7 +66,7 @@ class OpenWeather:
             self.city = weather_obj['name']
             self.sunset = weather_obj['sys']['sunset']
 
-    def transclude(self, message:str) -> str:
+    def transclude(self, message: str) -> str:
         '''
         Replaces keywords in a message with associated API data.
         :param message: The message to transclude
@@ -74,4 +74,11 @@ class OpenWeather:
         :returns: The transcluded message
         '''
         #TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
-        pass
+        lst1 = message.split()
+        temp = 'default'
+        for i in lst1:
+            if i == '@weather':
+                temp = i
+        if temp != 'default':
+            message = message.replace(temp, str(self.high_temperature))
+        return message

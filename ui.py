@@ -30,7 +30,7 @@ def main():
     print('\t@lastfm: Bound to artist top album')
     print('P: Print data stored in a DSU file loaded by the C or O commands')
     print('Q: Quit the program')
-    
+
     print('Please input a valid command. Remember that it is case sensitive!')
     command = input()
     if command in ('C', 'D', 'R', 'O', 'L', 'Q', 'E', 'P'):
@@ -45,4 +45,8 @@ def main():
         full_input = f'{command} {path}'
     else:
         full_input = f'{command} {path} {option}'
+    if command == 'E':
+        zipc = input('Please input the zipcode(default is 92697):')
+        ccode = input('Please input the country code(default is US):')
+        
     a4.ui_operations(full_input)
