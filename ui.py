@@ -45,8 +45,9 @@ def main():
         full_input = f'{command} {path}'
     else:
         full_input = f'{command} {path} {option}'
-    if command == 'E':
+    if command == 'E' and path[0:8] == '-addpost':
         zipc = input('Please input the zipcode(default is 92697):')
         ccode = input('Please input the country code(default is US):')
-        
+        artist = input('Please input the artist(default is keshi):')
+        a4.api(zipc, ccode, artist)
     a4.ui_operations(full_input)

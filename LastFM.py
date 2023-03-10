@@ -58,3 +58,20 @@ class LastFM:
         url = f"http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist={self.artist}&api_key={self.apikey}&format=json"
         fm_obj = self._download_url(url)
         self.top_album = fm_obj['topalbums']['album'][0]['name']
+
+    def transclude(self, message: str) -> str:
+        '''
+        Replaces keywords in a message with associated API data.
+        :param message: The message to transclude
+            
+        :returns: The transcluded message
+        '''
+        #TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
+        lst1 = message.split()
+        temp = 'default'
+        for i in lst1:
+            if i == '@lastfm':
+                temp = i
+        if temp != 'default':
+            message = message.replace(temp, str(self.top_album))
+        return message

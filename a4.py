@@ -9,9 +9,13 @@ import os
 import re
 import Profile
 import ds_client
+from OpenWeather import OpenWeather
+from LastFM import LastFM
 
 open_vars = 'default'
 create_vars = 'default'
+weather = 'default'
+last_fm = 'default'
 port = 3021
 
 
@@ -246,8 +250,7 @@ def edit(o_vars, c_vars, user_input):
     if user_input[2:] == '-publishbio':
         # No additional option parameters
         # Publishes the current bio
-        ds_client.send(prof.dsuserver, port, prof.username,
-                       prof.password, message=None, bio=prof.bio)
+        ds_client.send(prof.dsuserver, port, prof.username, prof.password, message=None, bio=prof.bio)
     for option in range(len(lst1)):
         if lst1[option][0] == '-usr':
             prof.username = lst1[option][1]
@@ -261,7 +264,14 @@ def edit(o_vars, c_vars, user_input):
             prof.bio = lst1[option][1]
         elif lst1[option][0] == '-addpost':
             post = Profile.Post()
-            post.set_entry(lst1[option][1])
+            if '@weather' and '@lastfm' in lst1[option][1]:
+                entry = weather_transclude(lst1[option][1])
+                entry = lastfm_transclude(entry)
+            elif '@lastfm' in lst1[option][1] and '@weather' not in lst1[option][1]:
+                entry = lastfm_transclude(lst1[option][1])
+            elif '@weather' in lst1[option][1] and '@lastfm' not in lst1[option][1]:
+                entry = weather_transclude(lst1[option][1])
+            post.set_entry(entry)
             prof.add_post(post)
         elif lst1[option][0] == '-delpost':
             prof.del_post(int(lst1[option][1]))
@@ -278,7 +288,8 @@ def edit(o_vars, c_vars, user_input):
             # Publishes both the post associated with the id and the bio
             posts = prof.get_posts()
             if len(posts) > 0:
-                ds_client.send(prof.dsuserver, port, prof.username, prof.password, posts[int(lst1[option][1])]['entry'], prof.bio)
+                ds_client.send(prof.dsuserver, port, prof.username, prof.password, posts[int(
+                    lst1[option][1])]['entry'], prof.bio)
             else:
                 print('No posts to send')
         elif lst1[option][0] == '-srv':
@@ -418,6 +429,39 @@ def file_operations(user1):
                 file += item
                 file += ' '
         create_vars = create(user_path[0], file)
+
+
+def api(zipc, ccode, artist):
+    global weather
+    global last_fm
+    if (zipc != '' and zipc.isspace() == False) and (ccode != '' and ccode.isspace() == False):
+        weather = OpenWeather(zipc, ccode)
+    elif (zipc != '' and zipc.isspace() == False) and (ccode == '' or ccode.isspace() == True):
+        weather = OpenWeather(zipc)
+    elif (ccode != '' and ccode.isspace() == False) and (zipc == '' or zipc.isspace() == True):
+        weather = OpenWeather(ccode)
+    elif (ccode == '' or ccode.isspace() == True) and (zipc == '' or zipc.isspace() == True):
+        weather = OpenWeather()
+    if artist != '' and artist.isspace() == False:
+        last_fm = LastFM(artist)
+    else:
+        last_fm = LastFM()
+
+
+def weather_transclude(message):
+    global weather
+    weather.set_apikey('9f6cba8a231f19a48f417e2811537884')
+    weather.load_data()
+    transcluded = weather.transclude(message)
+    return transcluded
+
+
+def lastfm_transclude(message):
+    global last_fm
+    last_fm.set_apikey('073959fac063bd9930b9ffdb6f4ff9e7')
+    last_fm.load_data()
+    transcluded = last_fm.transclude(message)
+    return transcluded
 
 
 def ui_operations(user_input):
