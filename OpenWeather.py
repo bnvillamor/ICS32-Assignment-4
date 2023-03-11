@@ -3,7 +3,6 @@
 # villamob@uci.edu
 # 62443909
 from WebAPI import WebAPI
-# 9f6cba8a231f19a48f417e2811537884
 
 
 class OpenWeather(WebAPI):
@@ -19,17 +18,17 @@ class OpenWeather(WebAPI):
 
         '''
         url = f"http://api.openweathermap.org/data/2.5/weather?zip={self.zipcode},{self.ccode}&appid={self.apikey}"
-        weather_obj = super()._download_url(url)
-        if weather_obj is not None:
-            self.temperature = weather_obj['main']['temp']
-            self.high_temperature = weather_obj['main']['temp_max']
-            self.low_temperature = weather_obj['main']['temp_min']
-            self.latitude = weather_obj['coord']['lat']
-            self.longitude = weather_obj['coord']['lon']
-            self.description = weather_obj['weather'][0]['description']
-            self.humidity = weather_obj['main']['humidity']
-            self.city = weather_obj['name']
-            self.sunset = weather_obj['sys']['sunset']
+        self.weather_obj = super()._download_url(url)
+        if self.weather_obj is not None:
+            self.temperature = self.weather_obj['main']['temp']
+            self.high_temperature =  self.weather_obj['main']['temp_max']
+            self.low_temperature =  self.weather_obj['main']['temp_min']
+            self.latitude =  self.weather_obj['coord']['lat']
+            self.longitude =  self.weather_obj['coord']['lon']
+            self.description =  self.weather_obj['weather'][0]['description']
+            self.humidity =  self.weather_obj['main']['humidity']
+            self.city =  self.weather_obj['name']
+            self.sunset =  self.weather_obj['sys']['sunset']
 
     def transclude(self, message: str) -> str:
         '''
@@ -38,5 +37,6 @@ class OpenWeather(WebAPI):
 
         :returns: The transcluded message
         '''
-        message = message.replace('@weather', str(self.high_temperature))
+        if self.weather_obj is not None:
+            message = message.replace('@weather', str(self.high_temperature))
         return message

@@ -17,6 +17,10 @@ class Error503(Exception):
     '''503 Error Exception'''
 
 
+class Error401(Exception):
+    '''401 Error Exception'''
+
+
 class Error400(Exception):
     '''400 Error Exception'''
 
@@ -37,14 +41,16 @@ class WebAPI(ABC):
             json_results = response.read()
             r_obj = json.loads(json_results)
         except urllib.error.HTTPError as err:
-            if err.code == '404':
+            if err.code == 404:
                 raise Error404(f'{err.code} Error, please try again') from err
-            elif err.code == '503':
+            elif err.code == 503:
                 raise Error503(f'{err.code} Error, please try again') from err
-            elif err.code == '400':
-                raise Error400(f'{err.code} Error, please try again') from err
-            elif err.code == '403':
+            elif err.code == 401:
+                raise Error401(f'{err.code} Error, please try again') from err
+            elif err.code == 403:
                 raise Error403(f'{err.code} Error, please try again') from err
+            elif err.code == 400:
+                raise Error400(f'{err.code} Error, please try again') from err
         except urllib.error.URLError as err2:
             print('Loss of local connection to Internet')
             print(f'Error code: {err2}')
