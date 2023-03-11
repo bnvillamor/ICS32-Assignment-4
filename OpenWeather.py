@@ -1,3 +1,4 @@
+'''OpenWeather child class from WebAPI'''
 # Benjoseph Villamor
 # villamob@uci.edu
 # 62443909
@@ -6,7 +7,7 @@ from WebAPI import WebAPI
 
 
 class OpenWeather(WebAPI):
-
+    '''OpenWeather child class from WebAPI'''
     def __init__(self, zipcode='92697', ccode='US'):
         self.zipcode = zipcode
         self.ccode = ccode
@@ -17,9 +18,6 @@ class OpenWeather(WebAPI):
         class data attributes.
 
         '''
-        # TODO: use the apikey data attribute and the urllib module to request data from the web api.
-        # See sample code at the begining of Part 1 for a hint.
-        # TODO: assign the necessary response data to the required class data attributes
         url = f"http://api.openweathermap.org/data/2.5/weather?zip={self.zipcode},{self.ccode}&appid={self.apikey}"
         weather_obj = super()._download_url(url)
         if weather_obj is not None:
@@ -40,6 +38,5 @@ class OpenWeather(WebAPI):
 
         :returns: The transcluded message
         '''
-        # TODO: write code necessary to transclude keywords in the message parameter with appropriate data from API
         message = message.replace('@weather', str(self.high_temperature))
         return message

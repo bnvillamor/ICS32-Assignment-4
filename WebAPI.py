@@ -1,3 +1,4 @@
+'''WebAPI parent class and error handling'''
 # Benjoseph Villamor
 # villamob@uci.edu
 # 62443909
@@ -8,7 +9,24 @@ from urllib import request, error
 from abc import ABC, abstractmethod
 
 
+class Error404(Exception):
+    '''404 Error Exception'''
+
+
+class Error503(Exception):
+    '''503 Error Exception'''
+
+
+class Error400(Exception):
+    '''400 Error Exception'''
+
+
+class Error403(Exception):
+    '''403 Error Exception'''
+
+
 class WebAPI(ABC):
+    '''WebAPI parent class for OpenWeather and LastFM'''
 
     def _download_url(self, url_to_download: str) -> dict:
         response = None
@@ -19,8 +37,14 @@ class WebAPI(ABC):
             json_results = response.read()
             r_obj = json.loads(json_results)
         except urllib.error.HTTPError as err:
-            print('Failed to download contents of URL')
-            print(f'Status code: {err.code}')
+            if err.code == '404':
+                raise Error404(f'{err.code} Error, please try again') from err
+            elif err.code == '503':
+                raise Error503(f'{err.code} Error, please try again') from err
+            elif err.code == '400':
+                raise Error400(f'{err.code} Error, please try again') from err
+            elif err.code == '403':
+                raise Error403(f'{err.code} Error, please try again') from err
         except urllib.error.URLError as err2:
             print('Loss of local connection to Internet')
             print(f'Error code: {err2}')
@@ -37,19 +61,17 @@ class WebAPI(ABC):
         '''
         Sets the apikey required to make requests to a web API.
         :param apikey: The apikey supplied by the API service
-            
+
         '''
-        #TODO: assign apikey value to a class data attribute that can be accessed by class members
         self.apikey = apikey
 
     @abstractmethod
     def load_data(self):
         '''
         Calls the web api using the required values and stores the response in class data attributes.
-            
+
         '''
-        pass
 
     @abstractmethod
     def transclude(self, message: str) -> str:
-        pass
+        '''Abstract Transclude method'''
