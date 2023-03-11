@@ -2,16 +2,36 @@
 # villamob@uci.edu
 # 62443909
 
-
+import json
+import urllib
+from urllib import request, error
 from abc import ABC, abstractmethod
 
 
 class WebAPI(ABC):
 
-    def _download_url(self, url: str) -> dict:
-        # TODO: Implement web api request code in a way that supports
-        # all types of web APIs
-        pass
+    def _download_url(self, url_to_download: str) -> dict:
+        response = None
+        r_obj = None
+
+        try:
+            response = urllib.request.urlopen(url_to_download)
+            json_results = response.read()
+            r_obj = json.loads(json_results)
+        except urllib.error.HTTPError as err:
+            print('Failed to download contents of URL')
+            print(f'Status code: {err.code}')
+        except urllib.error.URLError as err2:
+            print('Loss of local connection to Internet')
+            print(f'Error code: {err2}')
+        except (IndexError, KeyError) as err3:
+            print('Invalid data formatting')
+            print(f'Error code: {err3}')
+        finally:
+            if response is not None:
+                response.close()
+
+        return r_obj
 
     def set_apikey(self, apikey: str) -> None:
         '''
@@ -20,8 +40,7 @@ class WebAPI(ABC):
             
         '''
         #TODO: assign apikey value to a class data attribute that can be accessed by class members
-        self._apikey = apikey
-        return self._apikey
+        self.apikey = apikey
 
     @abstractmethod
     def load_data(self):
@@ -29,10 +48,6 @@ class WebAPI(ABC):
         Calls the web api using the required values and stores the response in class data attributes.
             
         '''
-        #TODO: use the apikey data attribute and the urllib module to request data from the web api. 
-        # See sample code at the begining of Part 1 for a hint.
-        
-        #TODO: assign the necessary response data to the required class data attributes
         pass
 
     @abstractmethod

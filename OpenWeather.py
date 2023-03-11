@@ -1,49 +1,15 @@
 # Benjoseph Villamor
 # villamob@uci.edu
 # 62443909
-import urllib
-import json
-from urllib import request, error
+from WebAPI import WebAPI
 # 9f6cba8a231f19a48f417e2811537884
 
 
-class OpenWeather:
+class OpenWeather(WebAPI):
 
     def __init__(self, zipcode='92697', ccode='US'):
         self.zipcode = zipcode
         self.ccode = ccode
-
-    def set_apikey(self, apikey: str) -> None:
-        '''
-        Sets the apikey required to make requests to a web API.
-        :param apikey: The apikey supplied by the API service
-
-        '''
-        # TODO: assign apikey value to a class data attribute that can be accessed by class members
-        self.apikey = apikey
-
-    def _download_url(self, url_to_download: str) -> dict:
-        response = None
-        r_obj = None
-
-        try:
-            response = urllib.request.urlopen(url_to_download)
-            json_results = response.read()
-            r_obj = json.loads(json_results)
-        except urllib.error.HTTPError as err:
-            print('Failed to download contents of URL')
-            print(f'Status code: {err.code}')
-        except urllib.error.URLError as err2:
-            print('Loss of local connection to Internet')
-            print(f'Error code: {err2}')
-        except (IndexError, KeyError) as err3:
-            print('Invalid data formatting from the remote API')
-            print(f'Error code: {err3}')
-        finally:
-            if response is not None:
-                response.close()
-
-        return r_obj
 
     def load_data(self) -> None:
         '''
@@ -55,7 +21,7 @@ class OpenWeather:
         # See sample code at the begining of Part 1 for a hint.
         # TODO: assign the necessary response data to the required class data attributes
         url = f"http://api.openweathermap.org/data/2.5/weather?zip={self.zipcode},{self.ccode}&appid={self.apikey}"
-        weather_obj = self._download_url(url)
+        weather_obj = super()._download_url(url)
         if weather_obj is not None:
             self.temperature = weather_obj['main']['temp']
             self.high_temperature = weather_obj['main']['temp_max']
